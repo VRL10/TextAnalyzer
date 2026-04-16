@@ -16,6 +16,9 @@
 #include <QTimer>
 #include <QUrl>
 
+
+// Esse arquivo implementa o comportamento da janela (o "cérebro")
+
 namespace {
 constexpr int kRequestTimeoutMs = 30 * 1000;
 }
@@ -32,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEditArquivo->setReadOnly(true);
     ui->plainTextEditResultado->setReadOnly(true);
 
+    // Quando usuário clica em "Selecionar", abre uma janela para escolher o .txt
     connect(ui->pushButtonSelecionar, &QPushButton::clicked, this, [this]() {
         const QString filePath = QFileDialog::getOpenFileName(
             this,
@@ -48,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
         setStatusMessage("Arquivo selecionado com sucesso.");
     });
 
+    // Lê o arquivo e envia via HTTP para o servidor
     connect(ui->pushButtonEnviar, &QPushButton::clicked, this, [this]() {
         if (pendingReply) {
             QMessageBox::information(this,
@@ -157,6 +162,7 @@ void MainWindow::setStatusMessage(const QString &message, bool isError)
     ui->labelStatus->setStyleSheet(isError ? "color: #b00020;" : "color: #0b6623;");
 }
 
+// Recebe a resposta do servidor e mostra na tela (interface) para o usuário.
 void MainWindow::handleNetworkReply(QNetworkReply *reply)
 {
     const QByteArray responseBody = reply->readAll();

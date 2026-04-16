@@ -1,3 +1,5 @@
+# Diz como compilar o programa - o compilador lê isso para saber como montar o programa
+
 cmake_minimum_required(VERSION 3.19)
 project(trabalho04 LANGUAGES CXX)
 
